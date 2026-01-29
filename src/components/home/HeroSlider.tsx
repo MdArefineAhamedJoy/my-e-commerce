@@ -90,7 +90,7 @@ const HeroSlider: React.FC = () => {
               </div>
 
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/40 to-transparent" />
 
               {/* Content */}
               <div className="relative h-full container flex items-center px-4 md:px-8">
@@ -152,38 +152,6 @@ const HeroSlider: React.FC = () => {
             </div>
           </SwiperSlide>
         ))}
-
-        {/* Custom Navigation Arrows */}
-        <button className="swiper-custom-prev absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 border border-white/30 bg-black/20 backdrop-blur-md text-white hover:bg-orange-500 hover:border-orange-500 rounded-full flex items-center justify-center transition-all duration-300 group">
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2.5}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <button className="swiper-custom-next absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full flex items-center justify-center transition-all group">
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2.5}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
 
         {/* Custom Pagination */}
         <div className="swiper-custom-pagination absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3"></div>

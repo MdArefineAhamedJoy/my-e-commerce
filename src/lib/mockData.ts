@@ -246,3 +246,9 @@ export const getProductsByCategory = (category: string, limit?: number) => {
 export const getProductBySlug = (slug: string) => {
   return MOCK_PRODUCTS.find((product) => product.slug === slug);
 };
+
+export const getProductsByGender = (gender: "men" | "women" | "unisex") => {
+  return MOCK_PRODUCTS.filter(
+    (product) => product.gender === gender || product.gender === "unisex",
+  );
+};
