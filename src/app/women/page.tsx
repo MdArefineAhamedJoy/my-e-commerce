@@ -67,7 +67,7 @@ export default function WomenPage({
   const allWomenProducts = getProductsByGender("women");
 
   return (
-    <main>
+    <main style={{ paddingTop: "var(--header-height, 50px)" }}>
       <ClassicBanner
         title={
           selectedCategory

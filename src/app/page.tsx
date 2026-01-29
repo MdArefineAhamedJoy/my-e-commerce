@@ -10,7 +10,10 @@ export default function HomePage() {
   const bestSellers = getProductsByTag("bestseller", 4);
 
   return (
-    <div className="min-h-screen">
+    <div
+      className="min-h-screen"
+      style={{ paddingTop: "var(--header-height, 80px)" }}
+    >
       {/* Hero Slider */}
       <HeroSlider />
 
@@ -51,7 +54,7 @@ export default function HomePage() {
 
       {/* Newsletter */}
       <section className="py-16 md:py-24 relative overflow-hidden group">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800" />
+        <div className="absolute inset-0 bg-linear-to-br from-gray-900 to-gray-800" />
         <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 to-transparent group-hover:from-orange-500/20 transition-all duration-300" />
         <Newsletter />
       </section>

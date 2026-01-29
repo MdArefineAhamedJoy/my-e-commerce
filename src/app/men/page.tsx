@@ -68,7 +68,7 @@ export default function MenPage({
   const allMenProducts = getProductsByGender("men");
 
   return (
-    <main>
+    <main style={{ paddingTop: "var(--header-height, 0px)" }}>
       <ClassicBanner
         title={
           selectedCategory
