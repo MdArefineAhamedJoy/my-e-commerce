@@ -17,8 +17,8 @@ const MobileMenu: React.FC = () => {
   const menuItems = [
     { label: "Home", href: "/" },
     { label: "Shop All", href: "/shop" },
-    { label: "Men", href: "/shop?category=men" },
-    { label: "Women", href: "/shop?category=women" },
+    { label: "Men", href: "/men" },
+    { label: "Women", href: "/women" },
     { label: "New Arrivals", href: "/shop?tag=new-arrival" },
     { label: "Trending", href: "/shop?tag=trending" },
     { label: "Sale", href: "/shop?tag=sale" },

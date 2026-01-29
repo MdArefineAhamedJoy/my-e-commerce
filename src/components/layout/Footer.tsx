@@ -56,7 +56,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/shop?category=mens-shirts"
+                  href="/men"
                   className="text-gray-400 hover:text-orange-500 transition-colors"
                 >
                   Men&apos;s Clothing
@@ -64,7 +64,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="/shop?category=womens-tops"
+                  href="/women"
                   className="text-gray-400 hover:text-orange-500 transition-colors"
                 >
                   Women&apos;s Clothing

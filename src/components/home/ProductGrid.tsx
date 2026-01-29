@@ -7,12 +7,14 @@ import React from "react";
 
 interface ProductGridProps {
   title: string;
+  subtitle?: string;
   products: Product[];
   viewAllLink?: string;
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({
   title,
+  subtitle,
   products,
   viewAllLink,
 }) => {

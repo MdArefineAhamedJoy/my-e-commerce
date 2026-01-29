@@ -3,6 +3,7 @@
 import { useStore } from "@/lib/store";
 import { Product } from "@/lib/types";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { IoCartOutline, IoHeart, IoHeartOutline } from "react-icons/io5";
@@ -54,10 +55,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {/* Main Image with Skewed Effect */}
           <div className="relative aspect-[4/5] overflow-hidden clip-path-polygon">
             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-            <img
+            <Image
               src={product.images[0]}
               alt={product.name}
-              className="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-2 transition-all duration-700"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover group-hover:scale-110 group-hover:rotate-2 transition-all duration-700"
             />
           </div>
 

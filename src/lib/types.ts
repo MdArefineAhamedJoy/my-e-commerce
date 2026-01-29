@@ -8,6 +8,8 @@ export interface Product {
   price: number;
   originalPrice?: number; // For sale items
   category: "shirt" | "pant" | "accessory" | "lifestyle";
+  subcategory?: string;
+  gender: "men" | "women" | "unisex";
   tags: string[]; // ['new-arrival', 'trending', 'bestseller']
   images: string[]; // Multiple image URLs
   sizes: string[]; // ['S', 'M', 'L', 'XL']

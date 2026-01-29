@@ -34,8 +34,8 @@ const Header: React.FC = () => {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Shop", href: "/shop", hasMegaMenu: true },
-    { label: "Men", href: "/shop?category=men" },
-    { label: "Women", href: "/shop?category=women" },
+    { label: "Men", href: "/men" },
+    { label: "Women", href: "/women" },
     { label: "New", href: "/shop?tag=new-arrival" },
     { label: "Sale", href: "/shop?tag=sale" },
   ];
@@ -69,8 +69,10 @@ const Header: React.FC = () => {
 
       {/* Main Header */}
       <header
-        className={`sticky top-0 z-40 bg-white transition-all duration-300 ${
-          isScrolled ? "shadow-md py-3" : "py-4 md:py-5"
+        className={`sticky top-0 z-40 transition-all duration-300 ${
+          isScrolled
+            ? "bg-white/90 backdrop-blur-md shadow-md py-3"
+            : "bg-white py-4 md:py-5"
         }`}
       >
         <div className="container">
