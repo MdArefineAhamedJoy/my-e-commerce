@@ -22,52 +22,111 @@ const SubCategoryGrid: React.FC<SubCategoryGridProps> = ({
   categories,
 }) => {
   return (
-    <div className="container py-12 md:py-20">
+    <div className="container pt-16 pb-32 md:pb-40">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-12"
+        className="text-center mb-16"
       >
-        <span className="text-orange-500 font-bold tracking-widest uppercase text-sm">
-          Shop By Category
+        <span className="text-gray-500 font-medium tracking-[0.3em] uppercase text-xs md:text-sm">
+          The Collection
         </span>
-        <h2 className="text-3xl md:text-4xl font-bold mt-2 text-gray-900">
-          Explore {gender === "men" ? "Men's" : "Women's"} Collection
+        <h2 className="text-3xl md:text-5xl font-serif font-medium mt-4 text-gray-700 tracking-tight">
+          <span className="inline-block px-6 py-2 rounded-[1px] relative">
+            Explore {gender === "men" ? "Men's" : "Women's"} Essentials
+          </span>
         </h2>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {categories.map((category, index) => (
-          <Link key={category.id} href={`/${gender}?category=${category.slug}`}>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              whileHover={{ y: -10 }}
-              className="group cursor-pointer relative h-[400px] rounded-2xl overflow-hidden shadow-xl"
-            >
-              <Image
-                src={category.image}
-                alt={category.name}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+      <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[300px] gap-4">
+        {categories.map((category, index) => {
+          // Mosaic Layout Logic
+          let gridClass = "";
+          switch (index % 6) {
+            case 0:
+              gridClass = "md:col-span-2 md:row-span-2"; // Big Square
+              break;
+            case 1:
+              gridClass = "md:col-span-1 md:row-span-1"; // Small Square
+              break;
+            case 2:
+              gridClass = "md:col-span-1 md:row-span-2"; // Tall Vertical
+              break;
+            case 3:
+              gridClass = "md:col-span-1 md:row-span-1"; // Small Square
+              break;
+            case 4:
+              gridClass = "md:col-span-2 md:row-span-1"; // Wide Horizontal
+              break;
+            case 5:
+              gridClass = "md:col-span-2 md:row-span-1"; // Wide Horizontal
+              break;
+            default:
+              gridClass = "md:col-span-1 md:row-span-1";
+          }
 
-              <div className="absolute bottom-0 left-0 w-full p-8">
-                <h3 className="text-white text-3xl font-bold mb-2 transform group-hover:translate-x-2 transition-transform duration-300">
-                  {category.name}
-                </h3>
-                <div className="w-16 h-1 bg-orange-500 rounded-full group-hover:w-24 transition-all duration-300" />
-                <p className="text-gray-300 mt-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-100">
-                  Discover {category.name} &rarr;
-                </p>
-              </div>
-            </motion.div>
-          </Link>
-        ))}
+          return (
+            <Link
+              key={category.id}
+              href={`/${gender}?category=${category.slug}`}
+              className={`${gridClass} group relative overflow-hidden rounded-[4px] bg-gray-100`}
+            >
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.05 }}
+                className="w-full h-full relative"
+              >
+                <Image
+                  src={category.image}
+                  alt={category.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+
+                {/* Modern Dark Overlay - Solid at bottom, fading up */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent opacity-80 transition-opacity duration-300" />
+
+                {/* Full Overlay on Hover */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                <div className="absolute bottom-0 left-0 w-full p-6 md:p-8">
+                  <div className="overflow-hidden">
+                    <h3 className="text-white text-xl md:text-2xl font-medium tracking-wide translate-y-0 transition-transform duration-500 group-hover:-translate-y-1">
+                      {category.name}
+                    </h3>
+                  </div>
+                  <div className="overflow-hidden mt-2">
+                    <p className="text-gray-300 text-sm tracking-widest uppercase opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-75">
+                      View Collection
+                    </p>
+                  </div>
+                </div>
+
+                {/* Minimal Arrow Icon Top Right */}
+                <div className="absolute top-6 right-6 opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6 text-white"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+                    />
+                  </svg>
+                </div>
+              </motion.div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

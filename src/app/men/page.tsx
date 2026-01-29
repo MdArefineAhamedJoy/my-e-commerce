@@ -41,14 +41,14 @@ const menCategories: SubCategory[] = [
     name: "Polos",
     slug: "polo",
     image:
-      "https://images.unsplash.com/photo-1625910515337-17d79b8b1569?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?q=80&w=2071&auto=format&fit=crop",
   },
   {
     id: "m-5",
     name: "Accessories",
     slug: "accessories",
     image:
-      "https://images.unsplash.com/photo-1589785233157-55099392e212?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1621600411688-4be93cd68504?q=80&w=2072&auto=format&fit=crop",
   },
   {
     id: "m-6",

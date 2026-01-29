@@ -47,7 +47,7 @@ const womenCategories: SubCategory[] = [
     name: "Accessories",
     slug: "accessories",
     image:
-      "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1576053139778-7e32f2ae3cfd?q=80&w=2070&auto=format&fit=crop",
   },
   {
     id: "w-6",
