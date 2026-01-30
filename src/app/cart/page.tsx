@@ -20,7 +20,8 @@ const CartPage: React.FC = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const frame = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const subtotal = cart.reduce(
