@@ -59,25 +59,27 @@ const menCategories: SubCategory[] = [
   },
 ];
 
-export default function MenPage({
+export default async function MenPage({
   searchParams,
 }: {
-  searchParams?: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }) {
-  const selectedCategory = searchParams?.category;
+  const params = await searchParams;
+  const selectedCategory = params?.category;
   const allMenProducts = getProductsByGender("men");
 
   return (
-    <main style={{ paddingTop: "var(--header-height, 0px)" }}>
-      <ClassicBanner
-        title={
-          selectedCategory
-            ? `${selectedCategory} Collection`
-            : "Men's Collection"
-        }
-        subtitle="Timeless classics for the modern gentleman"
-        backgroundImage="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=2070&auto=format&fit=crop"
-      />
+    <main
+      key={selectedCategory || "all"}
+      style={{ paddingTop: "var(--header-height, 0px)" }}
+    >
+      {!selectedCategory && (
+        <ClassicBanner
+          title="Men's Collection"
+          subtitle="Timeless classics for the modern gentleman"
+          backgroundImage="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=2070&auto=format&fit=crop"
+        />
+      )}
 
       {selectedCategory ? (
         <CategoryLayout

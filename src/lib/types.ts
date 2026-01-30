@@ -7,7 +7,7 @@ export interface Product {
   description: string;
   price: number;
   originalPrice?: number; // For sale items
-  category: "shirt" | "pant" | "accessory" | "lifestyle";
+  category: string;
   subcategory?: string;
   gender: "men" | "women" | "unisex";
   tags: string[]; // ['new-arrival', 'trending', 'bestseller']

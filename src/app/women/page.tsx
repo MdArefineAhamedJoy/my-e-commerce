@@ -58,25 +58,27 @@ const womenCategories: SubCategory[] = [
   },
 ];
 
-export default function WomenPage({
+export default async function WomenPage({
   searchParams,
 }: {
-  searchParams?: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }) {
-  const selectedCategory = searchParams?.category;
+  const params = await searchParams;
+  const selectedCategory = params?.category;
   const allWomenProducts = getProductsByGender("women");
 
   return (
-    <main style={{ paddingTop: "var(--header-height, 50px)" }}>
-      <ClassicBanner
-        title={
-          selectedCategory
-            ? `${selectedCategory} Collection`
-            : "Women's Collection"
-        }
-        subtitle="Elegance designed for every moment"
-        backgroundImage="https://images.unsplash.com/photo-1617931632967-691a1d13cc4f?q=80&w=2070&auto=format&fit=crop"
-      />
+    <main
+      key={selectedCategory || "all"}
+      style={{ paddingTop: "var(--header-height, 0px)" }}
+    >
+      {!selectedCategory && (
+        <ClassicBanner
+          title="Women's Collection"
+          subtitle="Elegant designs for every occasion"
+          backgroundImage="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop"
+        />
+      )}
 
       {selectedCategory ? (
         <CategoryLayout

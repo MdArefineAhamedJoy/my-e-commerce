@@ -193,7 +193,7 @@ const Header: React.FC = () => {
                     <ul className="space-y-3">
                       <li>
                         <Link
-                          href="/shop?category=mens-shirts"
+                          href="/shop?category=shirt&gender=men"
                           className="text-gray-600 hover:text-orange-500 transition-colors block"
                         >
                           Shirts
@@ -201,7 +201,7 @@ const Header: React.FC = () => {
                       </li>
                       <li>
                         <Link
-                          href="/shop?category=mens-pants"
+                          href="/shop?category=pants&gender=men"
                           className="text-gray-600 hover:text-orange-500 transition-colors block"
                         >
                           Pants
@@ -209,7 +209,7 @@ const Header: React.FC = () => {
                       </li>
                       <li>
                         <Link
-                          href="/shop?category=mens-accessories"
+                          href="/shop?category=accessory&gender=men"
                           className="text-gray-600 hover:text-orange-500 transition-colors block"
                         >
                           Accessories
@@ -224,23 +224,23 @@ const Header: React.FC = () => {
                     <ul className="space-y-3">
                       <li>
                         <Link
-                          href="/shop?category=womens-tops"
+                          href="/shop?category=shirt&gender=women"
                           className="text-gray-600 hover:text-orange-500 transition-colors block"
                         >
-                          Tops
+                          Tops & Shirts
                         </Link>
                       </li>
                       <li>
                         <Link
-                          href="/shop?category=womens-dresses"
+                          href="/shop?category=pants&gender=women"
                           className="text-gray-600 hover:text-orange-500 transition-colors block"
                         >
-                          Dresses
+                          Pants & Skirts
                         </Link>
                       </li>
                       <li>
                         <Link
-                          href="/shop?category=womens-accessories"
+                          href="/shop?category=accessory&gender=women"
                           className="text-gray-600 hover:text-orange-500 transition-colors block"
                         >
                           Accessories
@@ -286,7 +286,7 @@ const Header: React.FC = () => {
                     <ul className="space-y-3">
                       <li>
                         <Link
-                          href="/shop?priceRange=0-1000"
+                          href="/shop?priceMax=1000"
                           className="text-gray-600 hover:text-orange-500 transition-colors block"
                         >
                           Under 1000 BDT
@@ -294,18 +294,18 @@ const Header: React.FC = () => {
                       </li>
                       <li>
                         <Link
-                          href="/shop?priceRange=1000-2500"
+                          href="/shop?priceMax=2500"
                           className="text-gray-600 hover:text-orange-500 transition-colors block"
                         >
-                          1000 - 2500 BDT
+                          Under 2500 BDT
                         </Link>
                       </li>
                       <li>
                         <Link
-                          href="/shop?priceRange=2500-5000"
+                          href="/shop?priceMax=5000"
                           className="text-gray-600 hover:text-orange-500 transition-colors block"
                         >
-                          2500+ BDT
+                          Under 5000 BDT
                         </Link>
                       </li>
                     </ul>
