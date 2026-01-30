@@ -4,13 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 
-interface Collection {
-  id: string;
-  name: string;
-  description: string;
-  link: string;
-  image: string;
-}
+import { Collection } from "@/types/index";
 
 const collections: Collection[] = [
   {
@@ -58,7 +52,7 @@ const FeaturedCollections: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {collections.map((collection) => (
-            <Link key={collection.id} href={collection.link}>
+            <Link key={collection.id} href={collection.link || "#"}>
               <motion.div
                 whileHover={{ y: -8 }}
                 className="relative overflow-hidden rounded-2xl shadow-lg h-96 md:h-[500px] group cursor-pointer"
@@ -72,7 +66,7 @@ const FeaturedCollections: React.FC = () => {
                 />
 
                 {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent group-hover:from-black/80 transition-all duration-300" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent group-hover:from-black/80 transition-all duration-300" />
 
                 {/* Content */}
                 <div className="relative h-full flex flex-col items-center justify-end text-white p-8 text-center pb-12">
@@ -82,7 +76,7 @@ const FeaturedCollections: React.FC = () => {
                   <p className="text-base mb-6 opacity-90">
                     {collection.description}
                   </p>
-                  <button className="bg-white text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:text-white hover:scale-105 transition-all duration-300 shadow-xl">
+                  <button className="bg-white text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-linear-to-r hover:from-orange-500 hover:to-orange-600 hover:text-white hover:scale-105 transition-all duration-300 shadow-xl">
                     Shop Now
                   </button>
                 </div>

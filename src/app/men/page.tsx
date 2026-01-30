@@ -1,10 +1,9 @@
 import CategoryLayout from "@/components/shop/CategoryLayout";
 import ClassicBanner from "@/components/shop/ClassicBanner";
-import SubCategoryGrid, {
-  SubCategory,
-} from "@/components/shop/SubCategoryGrid";
+import SubCategoryGrid from "@/components/shop/SubCategoryGrid";
 import { getProductsByGender } from "@/lib/mockData";
-import { Product } from "@/lib/types";
+import { SubCategory } from "@/types/category.type";
+import { Product } from "@/types/product.type";
 
 // Helper to filter by exact subcategory
 // Assuming mockData has 'category' field matching these slugs

@@ -1,7 +1,7 @@
 "use client";
 
 import ProductCard from "@/components/product/ProductCard";
-import { Product } from "@/lib/types";
+import { Product } from "@/types/product.type";
 import { motion } from "framer-motion";
 import React from "react";
 

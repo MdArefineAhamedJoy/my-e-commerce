@@ -1,6 +1,8 @@
+import { CartItem } from "@/types/cart.type";
+import { Product } from "@/types/product.type";
+import { WishlistItem } from "@/types/wishlist.type";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { CartItem, Product, WishlistItem } from "./types";
 
 interface StoreState {
   // Cart State
@@ -31,6 +33,8 @@ interface StoreState {
   setMobileMenuOpen: (isOpen: boolean) => void;
   isMiniCartOpen: boolean;
   setMiniCartOpen: (isOpen: boolean) => void;
+  isWishlistOpen: boolean;
+  setWishlistOpen: (isOpen: boolean) => void;
 }
 
 export const useStore = create<StoreState>()(
@@ -120,6 +124,8 @@ export const useStore = create<StoreState>()(
 
       isMiniCartOpen: false,
       setMiniCartOpen: (isOpen) => set({ isMiniCartOpen: isOpen }),
+      isWishlistOpen: false,
+      setWishlistOpen: (isOpen) => set({ isWishlistOpen: isOpen }),
     }),
     {
       name: "my-shop-storage",

@@ -1,32 +1,32 @@
 "use client";
 
 import { useStore } from "@/lib/store";
-import { Product } from "@/lib/types";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoCartOutline, IoHeart, IoHeartOutline } from "react-icons/io5";
 
-interface ProductCardProps {
-  product: Product;
-}
+import { ProductCardProps } from "@/types/card.type";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } =
     useStore();
-  const inWishlist = isInWishlist(product.id);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (!mounted) {
+      const frame = requestAnimationFrame(() => setMounted(true));
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [mounted]);
+
+  const inWishlist = mounted ? isInWishlist(product.id) : false;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.images[0],
-      quantity: 1,
-    });
+    addToCart(product, product.sizes?.[0] || "M", product.colors?.[0], 1);
   };
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
@@ -35,12 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     if (inWishlist) {
       removeFromWishlist(product.id);
     } else {
-      addToWishlist({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.images[0],
-      });
+      addToWishlist(product);
     }
   };
 
@@ -53,10 +48,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Creative Angled Image Container */}
         <div className="relative overflow-hidden">
           {/* Main Image with Skewed Effect */}
-          <div className="relative aspect-[4/5] overflow-hidden clip-path-polygon">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+          <div className="relative aspect-4/5 overflow-hidden clip-path-polygon">
+            <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
             <Image
-              src={product.images[0]}
+              src={product.images?.[0] || "/images/placeholder.png"}
               alt={product.name}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -67,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {/* Floating Price Tag - Top Left */}
           <motion.div
             whileHover={{ rotate: -5, scale: 1.05 }}
-            className="absolute -top-3 -left-3 z-20 bg-white shadow-2xl px-5 py-3 rotate-[-8deg] group-hover:rotate-[-12deg] transition-all duration-300"
+            className="absolute -top-3 -left-3 z-20 bg-white shadow-2xl px-5 py-3 -rotate-8 group-hover:-rotate-12 transition-all duration-300"
           >
             <div className="text-xs text-gray-500 font-medium mb-0.5">
               Starting at
@@ -98,7 +93,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               onClick={handleAddToCart}
               whileHover={{ scale: 1.05, rotate: 2 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-br from-orange-500 to-orange-600 text-white px-6 py-3 flex items-center gap-2 font-bold shadow-2xl rotate-[-3deg] hover:rotate-0 transition-all duration-300 rounded-tl-2xl rounded-br-2xl"
+              className="bg-linear-to-br from-orange-500 to-orange-600 text-white px-6 py-3 flex items-center gap-2 font-bold shadow-2xl -rotate-3 hover:rotate-0 transition-all duration-300 rounded-tl-2xl rounded-br-2xl"
             >
               <IoCartOutline size={22} />
               <span className="text-sm">ADD</span>
@@ -113,7 +108,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </h3>
 
           {/* Decorative Line */}
-          <div className="mt-2 w-12 h-0.5 bg-gradient-to-r from-orange-500 to-transparent group-hover:w-20 transition-all duration-500" />
+          <div className="mt-2 w-12 h-0.5 bg-linear-to-r from-orange-500 to-transparent group-hover:w-20 transition-all duration-500" />
         </div>
       </motion.div>
     </Link>

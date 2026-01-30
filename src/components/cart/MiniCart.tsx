@@ -3,6 +3,7 @@
 import Button from "@/components/ui/Button";
 import { useStore } from "@/lib/store";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import {
@@ -105,7 +106,17 @@ const MiniCart: React.FC = () => {
                       className="flex gap-3 pb-4 border-b"
                     >
                       {/* Product Image */}
-                      <div className="w-20 h-20 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex-shrink-0" />
+                      <div className="w-20 h-20 shrink-0 relative rounded-lg overflow-hidden bg-gray-100">
+                        <Image
+                          src={
+                            item.product.images?.[0] ||
+                            "/images/placeholder.png"
+                          }
+                          alt={item.product.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
 
                       {/* Product Info */}
                       <div className="flex-1 min-w-0">

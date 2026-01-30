@@ -49,7 +49,7 @@ export default function ShopPage({ searchParams }: ShopPageProps) {
       );
     }
     if (tag) {
-      filtered = filtered.filter((p) => p.tags.includes(tag));
+      filtered = filtered.filter((p) => p.tags?.includes(tag));
     }
     if (priceMax) {
       filtered = filtered.filter((p) => p.price <= parseInt(priceMax));
@@ -366,7 +366,7 @@ export default function ShopPage({ searchParams }: ShopPageProps) {
                 animate={{ opacity: 1 }}
                 className="flex flex-col items-center justify-center py-40 text-center"
               >
-                <div className="w-16 h-[1px] bg-gray-200 mb-8" />
+                <div className="w-16 h-px bg-gray-200 mb-8" />
                 <p className="text-3xl font-serif italic text-gray-300 mb-8 tracking-tighter">
                   No pieces found in this archive selection.
                 </p>
@@ -378,7 +378,7 @@ export default function ShopPage({ searchParams }: ShopPageProps) {
         {/* Minimalist Pagination */}
         {totalPages > 1 && (
           <div className="mt-32 flex justify-center items-center gap-6">
-            <div className="h-[1px] w-12 md:w-24 bg-gray-100 shrink-0" />
+            <div className="h-px w-12 md:w-24 bg-gray-100 shrink-0" />
             <div className="flex items-center gap-3">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                 (page) => (

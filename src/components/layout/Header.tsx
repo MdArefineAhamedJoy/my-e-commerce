@@ -22,7 +22,13 @@ const Header: React.FC = () => {
   // Header ref to measure height
   const headerRef = React.useRef<HTMLElement>(null);
 
-  const { cart, wishlist, setMobileMenuOpen } = useStore();
+  const {
+    cart,
+    wishlist,
+    setMobileMenuOpen,
+    setWishlistOpen,
+    setMiniCartOpen,
+  } = useStore();
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const wishlistCount = wishlist.length;
 
@@ -137,8 +143,8 @@ const Header: React.FC = () => {
                   <IoSearchOutline size={24} />
                 </button>
 
-                <Link
-                  href="/wishlist"
+                <button
+                  onClick={() => setWishlistOpen(true)}
                   className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
                   aria-label="Wishlist"
                 >
@@ -148,10 +154,10 @@ const Header: React.FC = () => {
                       {wishlistCount}
                     </span>
                   )}
-                </Link>
+                </button>
 
                 <button
-                  onClick={() => useStore.getState().setMiniCartOpen(true)}
+                  onClick={() => setMiniCartOpen(true)}
                   className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
                   aria-label="Shopping cart"
                 >

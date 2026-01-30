@@ -5,12 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export interface SubCategory {
-  id: string;
-  name: string;
-  image: string;
-  slug: string;
-}
+import { SubCategory } from "@/types/category.type";
 
 interface SubCategoryGridProps {
   gender: "men" | "women";

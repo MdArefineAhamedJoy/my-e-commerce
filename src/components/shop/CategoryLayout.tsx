@@ -1,17 +1,12 @@
 "use client";
 
 import ProductCard from "@/components/product/ProductCard";
-import { Product } from "@/lib/types";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
-interface CategoryLayoutProps {
-  gender: "men" | "women";
-  categoryName: string; // e.g., "Pants", "Shirts"
-  products: Product[];
-}
+import { CategoryLayoutProps } from "@/types/category.type";
 
 const ITEMS_PER_PAGE = 16;
 
