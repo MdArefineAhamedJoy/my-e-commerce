@@ -30,13 +30,35 @@ const Modal: React.FC<ModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      const header = document.querySelector("header");
+      if (header) {
+        header.style.paddingRight = `${scrollbarWidth}px`;
+      }
     } else {
       document.body.style.overflow = "unset";
-    }
+      document.documentElement.style.overflow = "unset";
+      document.body.style.paddingRight = "0px";
 
+      const header = document.querySelector("header");
+      if (header) {
+        header.style.paddingRight = "0px";
+      }
+    }
     return () => {
       document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+      document.body.style.paddingRight = "0px";
+      const header = document.querySelector("header");
+      if (header) {
+        header.style.paddingRight = "0px";
+      }
     };
   }, [isOpen]);
 
@@ -56,15 +78,19 @@ const Modal: React.FC<ModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleBackdropClick}
-            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 cursor-default bg-black/5"
           >
             {/* Modal Content */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.3 }}
-              className={`bg-white rounded-xl shadow-xl w-full ${sizes[size]} max-h-[90vh] overflow-y-auto relative`}
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "100%", opacity: 0 }}
+              transition={{
+                type: "spring",
+                damping: 30,
+                stiffness: 300,
+              }}
+              className={`bg-white rounded-l-[1rem] shadow-[-10px_0_50px_rgba(0,0,0,0.1)] w-full sm:${sizes[size]} lg:max-w-sm h-full overflow-y-auto absolute right-0 top-0 border-l border-gray-100 flex flex-col`}
             >
               {/* Header */}
               {title && (

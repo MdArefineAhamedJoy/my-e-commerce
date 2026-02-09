@@ -71,7 +71,7 @@ const Header: React.FC = () => {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 w-full z-40 flex flex-col transition-all duration-300`}
+        className={`fixed top-0 w-full z-40 flex flex-col transition-[background-color,box-shadow,backdrop-filter,transform] duration-300`}
       >
         {/* Top Bar */}
         <div className="bg-gray-900 text-white text-xs py-2 hidden md:block">
@@ -90,7 +90,7 @@ const Header: React.FC = () => {
 
         {/* Main Header */}
         <div
-          className={`w-full transition-all duration-300 ${
+          className={`w-full transition-[background-color,box-shadow,backdrop-filter,transform,padding] duration-300 ${
             isScrolled
               ? "bg-white/90 backdrop-blur-md shadow-md py-3"
               : "bg-white py-4 md:py-5"
@@ -137,7 +137,7 @@ const Header: React.FC = () => {
               {/* Actions */}
               <div className="flex items-center gap-2 md:gap-3">
                 <button
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors hidden md:block"
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors hidden md:block text-gray-700"
                   aria-label="Search"
                 >
                   <IoSearchOutline size={24} />
@@ -145,10 +145,11 @@ const Header: React.FC = () => {
 
                 <button
                   onClick={() => setWishlistOpen(true)}
-                  className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="relative p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-700"
                   aria-label="Wishlist"
                 >
                   <IoHeartOutline size={24} />
+
                   {wishlistCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                       {wishlistCount}
@@ -158,10 +159,11 @@ const Header: React.FC = () => {
 
                 <button
                   onClick={() => setMiniCartOpen(true)}
-                  className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="relative p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-700"
                   aria-label="Shopping cart"
                 >
                   <IoCartOutline size={24} />
+
                   {cartCount > 0 && (
                     <motion.span
                       initial={{ scale: 0 }}
@@ -175,7 +177,7 @@ const Header: React.FC = () => {
 
                 <Link
                   href="/login"
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors hidden md:block"
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors hidden md:block text-gray-700"
                   aria-label="Account"
                 >
                   <IoPersonOutline size={24} />

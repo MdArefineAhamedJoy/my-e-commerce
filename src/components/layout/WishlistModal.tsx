@@ -26,6 +26,40 @@ const WishlistModal: React.FC = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    if (isWishlistOpen) {
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      const header = document.querySelector("header");
+      if (header) {
+        header.style.paddingRight = `${scrollbarWidth}px`;
+      }
+    } else {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+      document.body.style.paddingRight = "0px";
+
+      const header = document.querySelector("header");
+      if (header) {
+        header.style.paddingRight = "0px";
+      }
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+      document.body.style.paddingRight = "0px";
+      const header = document.querySelector("header");
+      if (header) {
+        header.style.paddingRight = "0px";
+      }
+    };
+  }, [isWishlistOpen]);
+
+  useEffect(() => {
     if (!mounted) {
       const frame = requestAnimationFrame(() => setMounted(true));
       return () => cancelAnimationFrame(frame);
@@ -57,7 +91,7 @@ const WishlistModal: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setWishlistOpen(false)}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-100"
+            className="fixed inset-0 bg-black/5 z-100"
           />
 
           {/* Side Drawer */}
@@ -65,8 +99,8 @@ const WishlistModal: React.FC = () => {
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-101 flex flex-col"
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className="fixed right-0 top-0 h-full w-full sm:max-w-md lg:max-w-sm bg-white shadow-[-10px_0_50px_rgba(0,0,0,0.1)] z-101 flex flex-col rounded-l-[1rem] border-l border-gray-100"
           >
             {/* Header */}
             <div className="p-6 border-b border-gray-100 flex items-center justify-between">
@@ -103,15 +137,15 @@ const WishlistModal: React.FC = () => {
                     <motion.div
                       key={item.product.id}
                       layout
-                      initial={{ opacity: 0, scale: 0.95 }}
+                      initial={{ opacity: 0, scale: 0.98 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="flex gap-4 group"
+                      className="group flex gap-4 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-orange-100 transition-all duration-300"
                     >
                       <div
-                        className="relative w-24 h-32 rounded-2xl overflow-hidden bg-gray-50 shrink-0 cursor-pointer"
+                        className="relative w-20 h-28 rounded-xl overflow-hidden bg-gray-50 shrink-0 cursor-pointer ring-1 ring-gray-100"
                         onClick={() => {
                           setWishlistOpen(false);
-                          router.push(`/product/${item.product.slug}`);
+                          router.push(`/shop/${item.product.slug}`);
                         }}
                       >
                         <Image
@@ -125,38 +159,46 @@ const WishlistModal: React.FC = () => {
                         />
                       </div>
 
-                      <div className="flex-1 flex flex-col justify-center min-w-0">
-                        <h4
-                          className="font-bold text-sm truncate cursor-pointer hover:text-orange-600 transition-colors"
-                          onClick={() => {
-                            setWishlistOpen(false);
-                            router.push(`/product/${item.product.slug}`);
-                          }}
-                        >
-                          {item.product.name}
-                        </h4>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mt-1">
-                          {item.product.category}
-                        </p>
-                        <div className="text-sm font-bold text-orange-600 mt-2">
-                          ৳{item.product.price}
+                      <div className="flex-1 flex flex-col justify-between min-w-0 py-0.5">
+                        <div>
+                          <h4
+                            className="font-extrabold text-sm text-gray-900 leading-snug truncate cursor-pointer hover:text-orange-600 transition-colors"
+                            onClick={() => {
+                              setWishlistOpen(false);
+                              router.push(`/shop/${item.product.slug}`);
+                            }}
+                          >
+                            {item.product.name}
+                          </h4>
+                          <p className="text-[9px] font-black uppercase tracking-widest text-gray-400 mt-1">
+                            {item.product.category}
+                          </p>
                         </div>
 
-                        <div className="flex items-center gap-3 mt-4">
-                          <button
-                            onClick={() => handleBuyNow(item)}
-                            className="flex-1 bg-black text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-all flex items-center justify-center gap-2"
-                          >
-                            <IoBagOutline size={14} />
-                            Buy Now
-                          </button>
-                          <button
-                            onClick={() => removeFromWishlist(item.product.id)}
-                            className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all"
-                            title="Remove"
-                          >
-                            <IoTrashOutline size={18} />
-                          </button>
+                        <div className="flex flex-col gap-3">
+                          <div className="text-base font-black text-gray-950 whitespace-nowrap">
+                            ৳{item.product.price.toLocaleString()}
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleBuyNow(item)}
+                              className="flex-1 bg-black text-white px-3 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-orange-600 shadow-sm transition-all flex items-center justify-center gap-2"
+                            >
+                              <IoBagOutline size={12} />
+                              Buy Now
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                removeFromWishlist(item.product.id)
+                              }
+                              className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 text-gray-300 hover:bg-red-50 hover:text-red-500 border border-gray-100 transition-all"
+                              title="Remove"
+                            >
+                              <IoTrashOutline size={16} />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </motion.div>
@@ -173,7 +215,7 @@ const WishlistModal: React.FC = () => {
                     setWishlistOpen(false);
                     router.push("/shop");
                   }}
-                  className="w-full py-4 text-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-black transition-colors"
+                  className="w-full py-3 text-center text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-black transition-colors"
                 >
                   Continue Browsing
                 </button>
