@@ -1,6 +1,7 @@
 "use client";
 
 import ProductCard from "@/components/product/ProductCard";
+import ShopDiscoveryBar from "@/components/shop/ShopDiscoveryBar";
 import { MOCK_PRODUCTS } from "@/lib/mockData";
 import { AnimatePresence, motion } from "framer-motion";
 import { use, useEffect, useMemo, useState } from "react";
@@ -23,7 +24,6 @@ export default function ShopPage({ searchParams }: ShopPageProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [localSearchQuery, setLocalSearchQuery] = useState("");
   const [internalSortBy, setInternalSortBy] = useState<string>("newest");
-  const [isPricePopoverOpen, setIsPricePopoverOpen] = useState(false);
   const [localPriceRange, setLocalPriceRange] = useState({ min: "", max: "" });
 
   // Sync scroll on page change
@@ -158,178 +158,25 @@ export default function ShopPage({ searchParams }: ShopPageProps) {
         </div>
       </section>
 
-      {/* Cinematic Discovery Bar */}
-      <div className="sticky top-(--header-height,80px) z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 transition-all duration-300">
-        <div className="container py-4 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="relative group w-full md:w-96">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-black transition-colors"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input
-              type="text"
-              placeholder={`Search pieces in ${viewTitle}...`}
-              value={localSearchQuery}
-              onChange={(e) => {
-                setLocalSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="w-full bg-gray-100 border border-gray-200 rounded-full pl-12 pr-6 py-3 text-xs text-black focus:ring-1 focus:ring-black/10 focus:bg-white placeholder:text-gray-400 font-medium transition-all"
-            />
-          </div>
-
-          <div className="flex items-center gap-6">
-            {/* Price Filter Popover Trigger */}
-            <div className="relative">
-              <button
-                onClick={() => setIsPricePopoverOpen(!isPricePopoverOpen)}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
-                  isPricePopoverOpen ||
-                  localPriceRange.min ||
-                  localPriceRange.max
-                    ? "bg-black text-white shadow-lg shadow-black/10"
-                    : "bg-gray-50 text-gray-400 hover:text-black border border-gray-100"
-                }`}
-              >
-                Price
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </button>
-
-              <AnimatePresence>
-                {isPricePopoverOpen && (
-                  <>
-                    {/* Backdrop for closing popover */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      onClick={() => setIsPricePopoverOpen(false)}
-                      className="fixed inset-0 z-30"
-                    />
-
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="absolute right-0 mt-3 w-64 bg-white border border-gray-100 rounded-2xl shadow-2xl p-5 z-40"
-                    >
-                      <div className="flex flex-col gap-4">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-black/40">
-                          Price Range (USD)
-                        </span>
-                        <div className="flex items-center gap-3">
-                          <input
-                            type="number"
-                            placeholder="Min"
-                            value={localPriceRange.min}
-                            onChange={(e) => {
-                              setLocalPriceRange((prev) => ({
-                                ...prev,
-                                min: e.target.value,
-                              }));
-                              setCurrentPage(1);
-                            }}
-                            className="text-black w-full bg-gray-50/50 border border-gray-100 rounded-lg px-3 py-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-black/10"
-                          />
-                          <div className="h-px w-2 bg-gray-200" />
-                          <input
-                            type="number"
-                            placeholder="Max"
-                            value={localPriceRange.max}
-                            onChange={(e) => {
-                              setLocalPriceRange((prev) => ({
-                                ...prev,
-                                max: e.target.value,
-                              }));
-                              setCurrentPage(1);
-                            }}
-                            className="text-black w-full bg-gray-50/50 border border-gray-100 rounded-lg px-3 py-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-black/10"
-                          />
-                        </div>
-                        <div className="flex justify-between items-center mt-2 pt-4 border-t border-gray-50">
-                          <button
-                            onClick={() => {
-                              setLocalPriceRange({ min: "", max: "" });
-                              setIsPricePopoverOpen(false);
-                              setCurrentPage(1);
-                            }}
-                            className="text-[9px] font-black uppercase tracking-tighter text-gray-400 hover:text-orange-600 transition-colors"
-                          >
-                            Reset
-                          </button>
-                          <button
-                            onClick={() => setIsPricePopoverOpen(false)}
-                            className="bg-black text-white px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-tighter hover:bg-gray-900 transition-colors shadow-lg shadow-black/5"
-                          >
-                            Apply
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <div className="h-4 w-px bg-gray-200 hidden md:block" />
-
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                Sort
-              </span>
-              <div className="flex bg-gray-50 rounded-full p-1 border border-gray-100">
-                {[
-                  { id: "newest", label: "New" },
-                  { id: "price-low", label: "Value" },
-                  { id: "price-high", label: "Luxury" },
-                ].map((sort) => (
-                  <button
-                    key={sort.id}
-                    onClick={() => setInternalSortBy(sort.id)}
-                    className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter transition-all ${
-                      internalSortBy === sort.id
-                        ? "bg-black text-white shadow-lg shadow-black/10"
-                        : "text-gray-400 hover:text-black"
-                    }`}
-                  >
-                    {sort.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="h-4 w-px bg-gray-200 hidden md:block" />
-
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              {filteredProducts.length}{" "}
-              <span className="text-gray-300">Items</span>
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Unified Discovery Bar */}
+      <ShopDiscoveryBar
+        searchQuery={localSearchQuery}
+        onSearchChange={(query) => {
+          setLocalSearchQuery(query);
+          setCurrentPage(1);
+        }}
+        priceRange={localPriceRange}
+        onPriceRangeChange={(range) => {
+          setLocalPriceRange(range);
+          setCurrentPage(1);
+        }}
+        sortBy={internalSortBy}
+        onSortChange={(sort) => {
+          setInternalSortBy(sort);
+          setCurrentPage(1);
+        }}
+        itemCount={filteredProducts.length}
+      />
 
       {/* Main Content Area */}
       <section className="container pb-20 md:pb-32">

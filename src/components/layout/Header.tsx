@@ -13,11 +13,16 @@ import {
   IoSearchOutline,
 } from "react-icons/io5";
 
+import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const pathname = usePathname();
+
+  // Determine if we are on the main shop route where we want a relative header
+  const isShopRoute = pathname === "/shop";
 
   // Header ref to measure height
   const headerRef = React.useRef<HTMLElement>(null);
@@ -45,7 +50,8 @@ const Header: React.FC = () => {
   useEffect(() => {
     const updateHeaderHeight = () => {
       if (headerRef.current) {
-        const height = headerRef.current.offsetHeight;
+        // Use getBoundingClientRect for sub-pixel precision if needed
+        const height = headerRef.current.getBoundingClientRect().height;
         document.documentElement.style.setProperty(
           "--header-height",
           `${height}px`,
@@ -54,16 +60,25 @@ const Header: React.FC = () => {
     };
 
     updateHeaderHeight();
+
+    // Create a series of checks to handle the transition duration
+    const interval = setInterval(updateHeaderHeight, 50);
+    const timeout = setTimeout(() => clearInterval(interval), 400);
+
     window.addEventListener("resize", updateHeaderHeight);
-    return () => window.removeEventListener("resize", updateHeaderHeight);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", updateHeaderHeight);
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [isScrolled]);
 
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Shop", href: "/shop", hasMegaMenu: true },
     { label: "Men", href: "/men" },
     { label: "Women", href: "/women" },
-    { label: "New", href: "/shop?tag=new-arrival" },
+    { label: "New", href: "/new-arrivals" },
     { label: "Sale", href: "/shop?tag=sale" },
   ];
 
@@ -71,23 +86,8 @@ const Header: React.FC = () => {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 w-full z-40 flex flex-col transition-[background-color,box-shadow,backdrop-filter,transform] duration-300`}
+        className={`${isShopRoute ? "relative" : "fixed top-0"} w-full z-40 flex flex-col transition-[background-color,box-shadow,backdrop-filter,transform] duration-300`}
       >
-        {/* Top Bar */}
-        <div className="bg-gray-900 text-white text-xs py-2 hidden md:block">
-          <div className="container flex justify-between items-center">
-            <p>Welcome to MyShop - Premium Fashion Store</p>
-            <div className="flex items-center gap-4">
-              <Link href="/track-order" className="hover:text-gray-300">
-                Track Order
-              </Link>
-              <Link href="/help" className="hover:text-gray-300">
-                Help
-              </Link>
-            </div>
-          </div>
-        </div>
-
         {/* Main Header */}
         <div
           className={`w-full transition-[background-color,box-shadow,backdrop-filter,transform,padding] duration-300 ${

@@ -8,15 +8,17 @@ interface ClassicBannerProps {
   title: string;
   subtitle: string;
   backgroundImage: string;
+  height?: string;
 }
 
 const ClassicBanner: React.FC<ClassicBannerProps> = ({
   title,
   subtitle,
   backgroundImage,
+  height = "h-[250px] md:h-[350px]",
 }) => {
   return (
-    <section className="relative w-full h-[250px] md:h-[350px] overflow-hidden">
+    <section className={`relative w-full ${height} overflow-hidden`}>
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
