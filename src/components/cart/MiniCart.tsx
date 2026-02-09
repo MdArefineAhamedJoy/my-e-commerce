@@ -1,10 +1,10 @@
 "use client";
 
-import Button from "@/components/ui/Button";
 import { useStore } from "@/lib/store";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 import {
@@ -22,6 +22,7 @@ const MiniCart: React.FC = () => {
     updateCartQuantity,
     removeFromCart,
   } = useStore();
+  const router = useRouter();
 
   const subtotal = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -96,34 +97,77 @@ const MiniCart: React.FC = () => {
               stiffness: 300,
               duration: 0.4,
             }}
-            className="fixed top-0 right-0 h-full w-full sm:max-w-md lg:max-w-sm bg-white z-50 shadow-[-10px_0_50px_rgba(0,0,0,0.1)] flex flex-col rounded-l-[1rem] border-l border-gray-100 overflow-hidden"
+            className="fixed top-0 right-0 h-full w-full sm:max-w-md lg:max-w-sm bg-white z-50 shadow-[-10px_0_50px_rgba(0,0,0,0.1)] flex flex-col rounded-l-2xl border-l border-gray-100 overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <div>
-                <h2 className="text-2xl font-black text-gray-900 leading-none">
-                  Shopping Bag
-                </h2>
-                <p className="text-sm text-gray-500 mt-1 font-medium">
-                  {cart.reduce((sum, item) => sum + item.quantity, 0)} items in
-                  your bag
-                </p>
+            <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-white/50 backdrop-blur-md sticky top-0 z-10">
+              <div className="flex items-center gap-4">
+                <motion.div
+                  whileHover={{ scale: 1.05, rotate: -5 }}
+                  className="relative w-10 h-10 flex items-center justify-center bg-black text-orange-500 rounded-tr-2xl rounded-bl-2xl shadow-lg"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                    />
+                  </svg>
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="absolute -top-1 -right-1 w-3 h-3 bg-orange-500 rounded-full border-2 border-white"
+                  />
+                </motion.div>
+
+                <div className="flex flex-col -space-y-1">
+                  <h2 className="text-lg font-black tracking-tight text-gray-950 uppercase italic">
+                    Shopping Bag
+                  </h2>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                      Inventory
+                    </span>
+                    <span className="w-1 h-1 bg-orange-500 rounded-full" />
+                    <span className="text-[10px] font-black text-orange-600 uppercase">
+                      {cart.reduce((sum, item) => sum + item.quantity, 0)}{" "}
+                      {cart.reduce((sum, item) => sum + item.quantity, 0) === 1
+                        ? "Item"
+                        : "Items"}
+                    </span>
+                  </div>
+                </div>
               </div>
+
               <button
                 onClick={() => setMiniCartOpen(false)}
-                className="p-3 hover:bg-gray-100 rounded-2xl transition-all active:scale-95 text-gray-400 hover:text-gray-900"
+                className="group relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-50 transition-all duration-300"
               >
-                <IoClose size={24} />
+                <div className="absolute inset-0 rounded-full border border-gray-100 scale-100 group-hover:scale-110 group-hover:border-red-100 transition-all cursor-pointer" />
+                <IoClose
+                  className="text-gray-400 group-hover:text-red-500 transition-colors cursor-pointer"
+                  size={24}
+                />
               </button>
             </div>
 
             {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {cart.length === 0 ? (
-                <div className="text-center py-20 px-4">
-                  <div className="w-24 h-24 mx-auto mb-6 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
+                <div className="h-full flex flex-col items-center justify-center text-center p-8">
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center mb-6 relative"
+                  >
                     <svg
-                      className="w-12 h-12"
+                      className="w-10 h-10 text-orange-200"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -135,19 +179,27 @@ const MiniCart: React.FC = () => {
                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                       />
                     </svg>
-                  </div>
+                    <motion.div
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="absolute -top-1 -right-1 bg-white p-1 rounded-full shadow-sm"
+                    >
+                      <IoAddOutline size={16} className="text-orange-500" />
+                    </motion.div>
+                  </motion.div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Your Bag is Empty
                   </h3>
-                  <p className="text-gray-500 mb-8 max-w-[200px] mx-auto text-sm">
-                    Looks like you haven&apos;t added anything to your bag yet.
+                  <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-[240px] mb-8">
+                    Your shopping bag is waiting for its first item. Start
+                    exploring our latest arrivals.
                   </p>
-                  <Button
+                  <button
                     onClick={() => setMiniCartOpen(false)}
-                    className="rounded-full px-8 py-3"
+                    className="px-8 py-3 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-orange-600 transition-all shadow-lg active:scale-95"
                   >
-                    Start Shopping
-                  </Button>
+                    Shop Collection
+                  </button>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -155,145 +207,127 @@ const MiniCart: React.FC = () => {
                     <motion.div
                       key={`${item.product.id}-${item.selectedSize}`}
                       layout
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      className="group flex gap-4 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-orange-100 transition-all duration-300"
+                      className="group flex gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
                     >
-                      {/* Product Image */}
-                      <div className="w-20 h-20 shrink-0 relative rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100">
+                      {/* Left: Product Image */}
+                      <div 
+                        className="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-50 shrink-0 cursor-pointer ring-1 ring-gray-100 group-hover:ring-orange-200 transition-all duration-500"
+                        onClick={() => {
+                          setMiniCartOpen(false);
+                          router.push(`/shop/${item.product.slug}`);
+                        }}
+                      >
                         <Image
-                          src={
-                            item.product.images?.[0] ||
-                            "/images/placeholder.png"
-                          }
+                          src={item.product.images?.[0] || "/images/placeholder.png"}
                           alt={item.product.name}
                           fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
                         />
                       </div>
 
-                      {/* Product Info */}
-                      <div className="flex-1 min-w-0 flex flex-col justify-between">
-                        <div>
-                          <Link
-                            href={`/shop/${item.product.slug}`}
-                            onClick={() => setMiniCartOpen(false)}
+                      {/* Right: Info Area (Image inspired structure) */}
+                      <div className="flex-1 min-w-0 flex flex-col py-0.5">
+                        {/* Top Line: Title & Price */}
+                        <div className="flex justify-between items-start gap-2">
+                          <h4
+                            className="font-black text-sm text-gray-950 line-clamp-2 leading-tight group-hover:text-orange-600 transition-colors cursor-pointer"
+                            onClick={() => {
+                              setMiniCartOpen(false);
+                              router.push(`/shop/${item.product.slug}`);
+                            }}
                           >
-                            <h3 className="font-extrabold text-gray-900 text-sm leading-snug hover:text-orange-600 transition-colors line-clamp-1">
-                              {item.product.name}
-                            </h3>
-                          </Link>
-                          <div className="flex items-center gap-1.5 mt-1.5">
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                              Size:
-                            </span>
-                            <span className="px-2 py-0.5 bg-gray-50 rounded text-[10px] font-black text-gray-700 border border-gray-200 uppercase">
-                              {item.selectedSize}
-                            </span>
-                          </div>
+                            {item.product.name}
+                          </h4>
+                          <span className="font-black text-sm whitespace-nowrap text-orange-500">
+                            ৳{item.product.price.toLocaleString()}
+                          </span>
                         </div>
 
-                        <div className="flex items-center justify-between mt-auto">
-                          <span className="font-black text-gray-950 text-base whitespace-nowrap">
-                            {(
-                              item.product.price * item.quantity
-                            ).toLocaleString()}{" "}
-                            BDT
+                        {/* Middle: Description/Details */}
+                        <div className="mt-1.5 flex flex-col gap-0.5">
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                            {item.product.category}
                           </span>
+                          <span className="text-[10px] font-black text-gray-500 uppercase">
+                            Size : <span className="text-orange-500">{item.selectedSize}</span>
+                          </span>
+                        </div>
 
+                        {/* Bottom: Actions */}
+                        <div className="flex items-center justify-between mt-auto pt-2">
                           {/* Quantity Controls */}
-                          <div className="flex items-center bg-gray-50 rounded-lg border border-gray-200 p-0.5">
+                          <div className="flex items-center bg-gray-100 rounded-md border border-gray-200 p-0.5">
                             <button
-                              onClick={() =>
-                                handleQuantityChange(
-                                  item.product.id,
-                                  item.selectedSize,
-                                  item.quantity - 1,
-                                )
-                              }
-                              className="p-1 hover:bg-white hover:shadow-sm rounded transition-all text-gray-400 hover:text-gray-900 disabled:opacity-30"
+                              onClick={() => handleQuantityChange(item.product.id, item.selectedSize, item.quantity - 1)}
+                              className="w-6 h-6 flex items-center justify-center hover:bg-white hover:text-orange-600 hover:shadow-sm rounded transition-all text-orange-600 cursor-pointer"
                               disabled={item.quantity <= 1}
                             >
-                              <IoRemoveOutline size={12} />
+                              <IoRemoveOutline  size={12} />
                             </button>
-                            <div className="flex flex-col items-center px-2">
-                              <span className="text-[8px] font-black text-gray-400 uppercase leading-none mb-0.5">
-                                Qty
-                              </span>
-                              <span className="text-xs font-black text-gray-900 leading-none">
-                                {item.quantity}
-                              </span>
-                            </div>
+                            <span className="w-6 text-center text-[11px] font-black text-gray-950">
+                              {item.quantity}
+                            </span>
                             <button
-                              onClick={() =>
-                                handleQuantityChange(
-                                  item.product.id,
-                                  item.selectedSize,
-                                  item.quantity + 1,
-                                )
-                              }
-                              className="p-1 hover:bg-white hover:shadow-sm rounded transition-all text-gray-400 hover:text-gray-900"
+                              onClick={() => handleQuantityChange(item.product.id, item.selectedSize, item.quantity + 1)}
+                              className="w-6 h-6 flex items-center justify-center hover:bg-white hover:text-orange-600 hover:shadow-sm rounded transition-all text-orange-600 cursor-pointer"
                             >
                               <IoAddOutline size={12} />
                             </button>
                           </div>
+
+                          <button
+                            onClick={() => removeFromCart(item.product.id, item.selectedSize)}
+                            className="flex items-center gap-1 px-2.5 py-1.5 bg-gray-200 text-gray-500 hover:bg-red-50 hover:text-red-500 rounded-md text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 cursor-pointer"
+                          >
+                            <IoTrashOutline size={12} />
+                            <span>Remove</span>
+                          </button>
                         </div>
                       </div>
-
-                      {/* Remove Button */}
-                      <div className="flex flex-col justify-start">
-                        <button
-                          onClick={() =>
-                            removeFromCart(item.product.id, item.selectedSize)
-                          }
-                          className="p-2 -mr-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-90"
-                          title="Remove Item"
-                        >
-                          <IoTrashOutline size={18} />
-                        </button>
-                      </div>
                     </motion.div>
+
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Footer */}
+            {/* Footer - Perfectly Compact */}
             {cart.length > 0 && (
-              <div className="bg-white/50 backdrop-blur-sm border-t border-gray-100 p-6 space-y-4">
-                <div className="flex justify-between items-end">
-                  <span className="text-gray-500 font-medium">Subtotal</span>
-                  <div className="text-right">
-                    <span className="text-2xl font-black text-gray-900 whitespace-nowrap">
-                      {subtotal.toLocaleString()} BDT
+              <div className="bg-white border-t border-gray-100 p-4 pt-3 space-y-3">
+                <div className="flex justify-between items-center px-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-400 font-bold text-[9px] uppercase tracking-widest">
+                      Subtotal
                     </span>
-                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">
-                      Excluding shipping and taxes
+                    <span className="w-1 h-1 bg-gray-200 rounded-full" />
+                    <p className="text-[9px] text-gray-400 font-medium uppercase tracking-tight">
+                      Tax Excl.
                     </p>
                   </div>
+                  <span className="text-2xl font-black text-gray-950 tracking-tighter">
+                    ৳{subtotal.toLocaleString()}
+                  </span>
                 </div>
-                <div className="grid grid-cols-2 gap-3 pt-2">
+
+                <div className="flex flex-col gap-2">
                   <Link
                     href="/cart"
                     onClick={() => setMiniCartOpen(false)}
-                    className="col-span-2"
+                    className="w-full"
                   >
-                    <Button
-                      fullWidth
-                      className="rounded-full py-2.5 bg-orange-600 hover:bg-orange-700 font-bold text-sm shadow-lg shadow-orange-100"
-                    >
+                    <button className="w-full h-11 bg-black text-orange-500 border border-black hover:bg-orange-600 hover:text-white hover:border-orange-600 rounded-xl font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-300 shadow-xl shadow-black/5 active:scale-[0.98] cursor-pointer">
                       Checkout Bag
-                    </Button>
+                    </button>
                   </Link>
-                  <Button
-                    variant="outline"
-                    fullWidth
+                  <button
                     onClick={() => setMiniCartOpen(false)}
-                    className="col-span-2 rounded-full py-2 border-2 border-gray-100 hover:border-gray-200 font-bold text-gray-600 text-xs"
+                    className="w-full py-1 text-center text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-black transition-all cursor-pointer"
                   >
                     Continue Shopping
-                  </Button>
+                  </button>
                 </div>
               </div>
             )}
