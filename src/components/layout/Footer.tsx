@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 import {
   IoLogoFacebook,
@@ -8,6 +11,9 @@ import {
 } from "react-icons/io5";
 
 const Footer: React.FC = () => {
+  const pathname = usePathname();
+  if (pathname === "/checkout") return null;
+
   return (
     <footer className="bg-gray-900 text-white pt-16 pb-8">
       <div className="container">

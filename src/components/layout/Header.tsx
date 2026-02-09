@@ -82,6 +82,8 @@ const Header: React.FC = () => {
     { label: "Sale", href: "/shop?tag=sale" },
   ];
 
+  if (pathname === "/checkout") return null;
+
   return (
     <>
       <header

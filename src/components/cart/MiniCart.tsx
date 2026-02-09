@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 import {
@@ -23,6 +23,7 @@ const MiniCart: React.FC = () => {
     removeFromCart,
   } = useStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   const subtotal = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -72,6 +73,8 @@ const MiniCart: React.FC = () => {
     if (newQuantity < 1) return;
     updateCartQuantity(productId, size, newQuantity);
   };
+
+  if (pathname === "/checkout") return null;
 
   return (
     <AnimatePresence>
@@ -213,7 +216,7 @@ const MiniCart: React.FC = () => {
                       className="group flex gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
                     >
                       {/* Left: Product Image */}
-                      <div 
+                      <div
                         className="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-50 shrink-0 cursor-pointer ring-1 ring-gray-100 group-hover:ring-orange-200 transition-all duration-500"
                         onClick={() => {
                           setMiniCartOpen(false);
@@ -221,7 +224,10 @@ const MiniCart: React.FC = () => {
                         }}
                       >
                         <Image
-                          src={item.product.images?.[0] || "/images/placeholder.png"}
+                          src={
+                            item.product.images?.[0] ||
+                            "/images/placeholder.png"
+                          }
                           alt={item.product.name}
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
@@ -252,7 +258,10 @@ const MiniCart: React.FC = () => {
                             {item.product.category}
                           </span>
                           <span className="text-[10px] font-black text-gray-500 uppercase">
-                            Size : <span className="text-orange-500">{item.selectedSize}</span>
+                            Size :{" "}
+                            <span className="text-orange-500">
+                              {item.selectedSize}
+                            </span>
                           </span>
                         </div>
 
@@ -261,17 +270,29 @@ const MiniCart: React.FC = () => {
                           {/* Quantity Controls */}
                           <div className="flex items-center bg-gray-100 rounded-md border border-gray-200 p-0.5">
                             <button
-                              onClick={() => handleQuantityChange(item.product.id, item.selectedSize, item.quantity - 1)}
+                              onClick={() =>
+                                handleQuantityChange(
+                                  item.product.id,
+                                  item.selectedSize,
+                                  item.quantity - 1,
+                                )
+                              }
                               className="w-6 h-6 flex items-center justify-center hover:bg-white hover:text-orange-600 hover:shadow-sm rounded transition-all text-orange-600 cursor-pointer"
                               disabled={item.quantity <= 1}
                             >
-                              <IoRemoveOutline  size={12} />
+                              <IoRemoveOutline size={12} />
                             </button>
                             <span className="w-6 text-center text-[11px] font-black text-gray-950">
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() => handleQuantityChange(item.product.id, item.selectedSize, item.quantity + 1)}
+                              onClick={() =>
+                                handleQuantityChange(
+                                  item.product.id,
+                                  item.selectedSize,
+                                  item.quantity + 1,
+                                )
+                              }
                               className="w-6 h-6 flex items-center justify-center hover:bg-white hover:text-orange-600 hover:shadow-sm rounded transition-all text-orange-600 cursor-pointer"
                             >
                               <IoAddOutline size={12} />
@@ -279,7 +300,9 @@ const MiniCart: React.FC = () => {
                           </div>
 
                           <button
-                            onClick={() => removeFromCart(item.product.id, item.selectedSize)}
+                            onClick={() =>
+                              removeFromCart(item.product.id, item.selectedSize)
+                            }
                             className="flex items-center gap-1 px-2.5 py-1.5 bg-gray-200 text-gray-500 hover:bg-red-50 hover:text-red-500 rounded-md text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 cursor-pointer"
                           >
                             <IoTrashOutline size={12} />
@@ -288,7 +311,6 @@ const MiniCart: React.FC = () => {
                         </div>
                       </div>
                     </motion.div>
-
                   ))}
                 </div>
               )}

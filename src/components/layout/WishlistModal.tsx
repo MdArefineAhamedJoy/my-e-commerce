@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { WishlistItem } from "@/types/wishlist.type";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
   IoBagOutline,
@@ -24,6 +24,7 @@ const WishlistModal: React.FC = () => {
     addToCart,
   } = useStore();
   const router = useRouter();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -67,7 +68,7 @@ const WishlistModal: React.FC = () => {
     }
   }, [mounted]);
 
-  if (!mounted) return null;
+  if (!mounted || pathname === "/checkout") return null;
 
   const handleBuyNow = (item: WishlistItem) => {
     // Add to cart with default size/color

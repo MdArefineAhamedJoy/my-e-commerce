@@ -243,7 +243,7 @@ export default function ShopPage({ searchParams }: ShopPageProps) {
                 ),
               )}
             </div>
-            <div className="h-[1px] w-12 md:w-24 bg-gray-100 shrink-0" />
+            <div className="h-px w-12 md:w-24 bg-gray-100 shrink-0" />
           </div>
         )}
       </section>
