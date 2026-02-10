@@ -7,11 +7,8 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
   IoAdd,
-  IoCartOutline,
   IoChevronBack,
   IoChevronForward,
-  IoHeart,
-  IoHeartOutline,
   IoRemove,
   IoStar,
 } from "react-icons/io5";
@@ -44,9 +41,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
   const handleAddToCart = () => {
     addToCart(product, selectedSize, selectedColor, quantity);
-    // Close mini cart if it was auto-opened, and navigate to checkout
     setMiniCartOpen(false);
-    router.push("/checkout");
+    router.push("/cart");
   };
 
   const handleWishlistToggle = () => {
@@ -63,14 +59,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           {/* Image Gallery */}
           <div className="flex flex-col gap-6 lg:sticky lg:top-32">
-            <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-gray-50 border border-gray-100">
+            <div className="relative aspect-4/5 overflow-hidden bg-[#fafafa] border border-[#eeeeee]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedImage}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
                   className="w-full h-full"
                 >
                   <Image
@@ -86,7 +82,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Navigation Arrows */}
+              {/* Navigation Arrows - Minimalist */}
               <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 hover:opacity-100 transition-opacity">
                 <button
                   onClick={() =>
@@ -94,9 +90,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                       prev === 0 ? product.images.length - 1 : prev - 1,
                     )
                   }
-                  className="p-2 rounded-full bg-white/80 backdrop-blur-md shadow-lg hover:bg-white text-black transition-all"
+                  className="w-12 h-12 flex items-center justify-center bg-white border border-[#eeeeee] text-black hover:bg-black hover:text-white transition-all"
                 >
-                  <IoChevronBack size={24} />
+                  <IoChevronBack size={20} />
                 </button>
                 <button
                   onClick={() =>
@@ -104,15 +100,15 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                       prev === product.images.length - 1 ? 0 : prev + 1,
                     )
                   }
-                  className="p-2 rounded-full bg-white/80 backdrop-blur-md shadow-lg hover:bg-white text-black transition-all"
+                  className="w-12 h-12 flex items-center justify-center bg-white border border-[#eeeeee] text-black hover:bg-black hover:text-white transition-all"
                 >
-                  <IoChevronForward size={24} />
+                  <IoChevronForward size={20} />
                 </button>
               </div>
 
-              {/* Price Badge on Image */}
-              <div className="absolute top-6 left-6 z-10 bg-black text-white px-6 py-2 rounded-full font-bold shadow-xl">
-                ৳{product.price}
+              {/* Price Badge - Moda Style */}
+              <div className="absolute top-0 right-0 z-10 bg-[#1c1c1c] text-white px-6 py-3 font-serif italic text-lg shadow-sm">
+                Tk {product.price.toLocaleString()}
               </div>
             </div>
 
@@ -122,10 +118,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`relative w-24 aspect-4/5 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
+                  className={`relative w-24 aspect-4/5 flex-shrink-0 overflow-hidden border transition-all ${
                     selectedImage === index
-                      ? "border-orange-500 scale-95"
-                      : "border-transparent opacity-60 hover:opacity-100"
+                      ? "border-[#1c1c1c]"
+                      : "border-[#eeeeee] opacity-60 hover:opacity-100"
                   }`}
                 >
                   <Image
@@ -141,13 +137,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
           {/* Product Info */}
           <div className="flex flex-col">
-            <div className="mb-10">
+            <div className="mb-12 border-b border-[#eeeeee] pb-12">
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex text-orange-500 gap-0.5">
+                <div className="flex text-[#1c1c1c] gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <IoStar
                       key={i}
-                      size={16}
+                      size={12}
                       className={
                         i < Math.floor(product.rating || 0)
                           ? "fill-current"
@@ -156,49 +152,51 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                     />
                   ))}
                 </div>
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest pt-0.5">
-                  {product.reviewCount || 0} Reviews
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] pt-0.5">
+                  ({product.reviewCount || 0} reviews)
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-black tracking-tighter leading-[1.1] mb-8">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif italic font-normal text-[#1c1c1c] leading-[1.1] mb-8">
                 {product.name}
               </h1>
 
               <div className="flex items-baseline gap-6">
-                <span className="text-4xl font-bold text-orange-600">
-                  ৳{product.price}
+                <span className="text-3xl font-serif text-[#1c1c1c]">
+                  Tk {product.price.toLocaleString()}.00
                 </span>
                 {product.originalPrice && (
-                  <span className="text-2xl text-gray-300 line-through font-medium">
-                    ৳{product.originalPrice}
+                  <span className="text-xl text-gray-300 line-through font-serif italic">
+                    Tk {product.originalPrice.toLocaleString()}.00
                   </span>
                 )}
               </div>
             </div>
 
-            <p className="text-base md:text-lg leading-relaxed text-gray-500 max-w-xl mb-4 italic">
+            <p className="text-[15px] leading-relaxed text-gray-600 mb-12">
               {product.description}
             </p>
 
             {/* Selection Options */}
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-12">
               {/* Color Selection */}
               {product.colors && product.colors.length > 0 && (
-                <div className="flex flex-col gap-3">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">
-                    Select Color:{" "}
-                    <span className="text-black">{selectedColor}</span>
+                <div className="flex flex-col gap-4">
+                  <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#1c1c1c]">
+                    color:{" "}
+                    <span className="font-serif italic capitalize ml-1">
+                      {selectedColor}
+                    </span>
                   </span>
-                  <div className="flex gap-3">
+                  <div className="flex gap-4">
                     {product.colors.map((color) => (
                       <button
                         key={color}
                         onClick={() => setSelectedColor(color)}
-                        className={`w-8 h-8 rounded-full border-2 p-0.5 transition-all ${
+                        className={`w-10 h-10 rounded-full border p-1 transition-all ${
                           selectedColor === color
-                            ? "border-black scale-110"
-                            : "border-gray-100 opacity-60 hover:opacity-100"
+                            ? "border-[#1c1c1c] scale-110"
+                            : "border-[#eeeeee] opacity-60 hover:opacity-100"
                         }`}
                       >
                         <div
@@ -213,20 +211,22 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
               {/* Size Selection */}
               {product.sizes && product.sizes.length > 0 && (
-                <div className="flex flex-col gap-3">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">
-                    Select Size:{" "}
-                    <span className="text-black">{selectedSize}</span>
+                <div className="flex flex-col gap-4">
+                  <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#1c1c1c]">
+                    size:{" "}
+                    <span className="font-serif italic uppercase ml-1">
+                      {selectedSize}
+                    </span>
                   </span>
                   <div className="flex gap-2">
                     {product.sizes.map((size) => (
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
-                        className={`min-w-12 h-12 flex items-center justify-center rounded-xl font-bold text-xs transition-all ${
+                        className={`min-w-[60px] h-12 flex items-center justify-center border text-[12px] font-bold transition-all ${
                           selectedSize === size
-                            ? "bg-black text-white shadow-xl scale-105"
-                            : "bg-gray-50 text-gray-600 hover:bg-gray-100"
+                            ? "bg-[#1c1c1c] text-white border-[#1c1c1c]"
+                            : "bg-white text-[#1c1c1c] border-[#eeeeee] hover:border-[#1c1c1c]"
                         }`}
                       >
                         {size}
@@ -237,100 +237,88 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               )}
 
               {/* Quantity */}
-              <div className="flex flex-col gap-3">
-                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">
-                  Quantity
+              <div className="flex flex-col gap-4">
+                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#1c1c1c]">
+                  quantity
                 </span>
-                <div className="flex items-center gap-4 w-fit bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
+                <div className="flex items-center border border-[#eeeeee] w-fit">
                   <button
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white hover:shadow-md transition-all text-gray-600"
+                    className="w-12 h-12 flex items-center justify-center hover:bg-gray-50 transition-colors text-[#1c1c1c]"
                   >
-                    <IoRemove size={18} />
+                    <IoRemove size={16} />
                   </button>
-                  <span className="w-10 text-center font-bold text-lg">
+                  <span className="w-12 text-center font-bold text-[14px]">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity((q) => q + 1)}
-                    className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white hover:shadow-md transition-all text-gray-600"
+                    className="w-12 h-12 flex items-center justify-center hover:bg-gray-50 transition-colors text-[#1c1c1c]"
                   >
-                    <IoAdd size={18} />
+                    <IoAdd size={16} />
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-5 mt-8">
-              <motion.button
-                whileHover={{ scale: 1.02, translateY: -4 }}
-                whileTap={{ scale: 0.98 }}
+            <div className="flex flex-col gap-4 mt-16">
+              <button
                 onClick={handleAddToCart}
-                className="flex-3 bg-black text-white py-6 px-10 rounded-2xl font-bold flex items-center justify-center gap-4 shadow-2xl shadow-black/20 hover:bg-orange-600 transition-all duration-500 group"
+                className="w-full bg-[#1c1c1c] text-white py-6 text-[13px] font-black uppercase tracking-[0.3em] hover:bg-[#333333] transition-colors"
               >
-                <IoCartOutline
-                  size={26}
-                  className="group-hover:rotate-[-10deg] transition-transform"
-                />
-                <span className="tracking-tight text-lg">
-                  Add to Shopping Bag
-                </span>
-              </motion.button>
+                Add to Shopping Bag
+              </button>
 
-              <motion.button
-                whileHover={{ scale: 1.02, translateY: -4 }}
-                whileTap={{ scale: 0.98 }}
+              <button
                 onClick={handleWishlistToggle}
-                className={`flex-1 h-20 flex items-center justify-center rounded-2xl border-2 transition-all duration-500 ${
+                className={`w-full py-6 text-[13px] font-black uppercase tracking-[0.3em] border transition-all ${
                   inWishlist
-                    ? "bg-orange-50 border-orange-500 text-orange-500"
-                    : "border-gray-100 text-gray-400 hover:border-black hover:text-black"
+                    ? "bg-[#fafafa] border-[#1c1c1c] text-[#1c1c1c]"
+                    : "border-[#eeeeee] text-gray-400 hover:border-[#1c1c1c] hover:text-[#1c1c1c]"
                 }`}
               >
-                {inWishlist ? (
-                  <IoHeart size={32} />
-                ) : (
-                  <IoHeartOutline size={32} />
-                )}
-              </motion.button>
+                {inWishlist ? "Saved to Wishlist" : "Add to Wishlist"}
+              </button>
             </div>
 
-            {/* Extra Info */}
-            <div className="mt-16 grid grid-cols-2 gap-y-10 gap-x-6 py-12 border-y border-gray-100">
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] font-black uppercase tracking-tighter text-gray-400">
-                  SKU
-                </span>
-                <span className="text-xs font-bold text-black">
-                  {product.sku}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] font-black uppercase tracking-tighter text-gray-400">
-                  Inventory
-                </span>
-                <span className="text-xs font-bold text-black">
-                  {product.stock > 0
-                    ? `${product.stock} in stock`
-                    : "Out of stock"}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] font-black uppercase tracking-tighter text-gray-400">
-                  Category
-                </span>
-                <span className="text-xs font-bold text-black capitalize">
-                  {product.category}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] font-black uppercase tracking-tighter text-gray-400">
-                  Available For
-                </span>
-                <span className="text-xs font-bold text-black capitalize">
-                  {product.gender}
-                </span>
+            {/* Extra Info - Minimalist Grid */}
+            <div className="mt-20 border-t border-[#eeeeee] pt-12 space-y-6">
+              <div className="grid grid-cols-2 gap-8">
+                <div className="space-y-1">
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">
+                    sku
+                  </span>
+                  <p className="text-[13px] font-medium text-[#1c1c1c]">
+                    {product.sku}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">
+                    inventory
+                  </span>
+                  <p className="text-[13px] font-medium text-[#1c1c1c]">
+                    {product.stock > 0
+                      ? `${product.stock} Units left`
+                      : "Out of stock"}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">
+                    category
+                  </span>
+                  <p className="text-[13px] font-medium text-[#1c1c1c] capitalize">
+                    {product.category}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">
+                    collection
+                  </span>
+                  <p className="text-[13px] font-medium text-[#1c1c1c] capitalize">
+                    {product.gender}&apos;s Editorial
+                  </p>
+                </div>
               </div>
             </div>
           </div>
