@@ -52,10 +52,11 @@ export default function HomePage() {
         />
       </section>
 
-      {/* Newsletter */}
-      <section className="py-16 md:py-24 relative overflow-hidden group">
-        <div className="absolute inset-0 bg-linear-to-br from-gray-900 to-gray-800" />
-        <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 to-transparent group-hover:from-orange-500/20 transition-all duration-300" />
+      {/* Newsletter / Style Circle Hub */}
+      <section className="h-[40vh] min-h-[400px] relative overflow-hidden bg-[#1c1c1c] border-y border-white/5">
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-orange-500/20 via-transparent to-transparent" />
+        </div>
         <Newsletter />
       </section>
     </div>

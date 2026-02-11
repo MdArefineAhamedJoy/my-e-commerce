@@ -16,4 +16,5 @@ export interface Product {
   sku: string;
   rating?: number;
   reviewCount?: number;
+  video?: string;
 }

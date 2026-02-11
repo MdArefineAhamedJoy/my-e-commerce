@@ -38,6 +38,7 @@ export const MOCK_PRODUCTS: Product[] = [
     sku: "LCS-BEI-002",
     rating: 4.5,
     reviewCount: 89,
+    video: "https://www.w3schools.com/html/mov_bbb.mp4",
   },
   {
     id: "3",
